@@ -108,7 +108,7 @@ Wait, what? Why did that happen? Let's figure it out.
 
 ## The Big Mistake (that everybody makes)
 
-It would seem reasonable to expect the page to log out both the content of the list element (which it did, successfully) and the appropriate number, `1`, `2`, or `3`. But it printed out `4`! Surprise and confusion are just as reasonable.
+It would seem reasonable to expect the page to log out both the content of the list element (which it did, successfully) and the appropriate secret message. But it printed out `undefined`! Notice as well that it printed out the number `3` for each click instead of `0`, `1`, and `2`. This means `index` is `3`, and there is no secret message at that index.
 
 Nearly every JavaScript developer has at some point been tripped up by this exact issue. To understand it, let's go back to our `callMeOnMyCellPhone` example.
 
@@ -135,7 +135,8 @@ for (var index = 0; index < listElements.length; index++) {
   var listElement = listElements[index];
   listElement.addEventListener('click', function() {
     console.log(this.innerHTML);
-    console.log(index + 1);
+    console.log(index);
+    console.log(secretMessages[index]);
   });
 }
 ```
@@ -145,19 +146,20 @@ The important parts are:
 * the for loop is creating a variable called `index`
 * we are creating a function (it's anonymous)
   * it's getting passed into `listElement.addEventListener`
-* we are printing out `index + 1`
+* we are printing out `this.innerHTML` (which works)
+* we are printing out `index` and `secretMessages[index]`
 
 So the functions - we are creating 3 of them, one for each list element - are all relying on the same variable: `index`. This is exactly what happened with `callMeOnMyCellPhone`: it was relying on `number`. We should therefore expect every click handler to print out the same number.
 
 > #### Trivia/advanced
-Why is the printed value `4` instead of `3`? The values index takes are `1`, `2`, and `3`. But the for loop actually tries to increase the value of `index` by one again! This means `index` hits `4`, at which point the for loop stops (because `index < listElements.length`).
+Why is the printed index `3` instead of `2`? The values index takes are `0`, `1`, and `2`. But the for loop actually tries to increase the value of `index` by one again! This means `index` hits `3`, at which point the for loop stops (because `index < listElements.length`). You can always test this by printing out the index of a for loop *after* the loop completes.
 
 
-I'd recommend reading this section more than once before we moving on. If you are unfamiliar with JavaScript scope and how it works, you'll want to play around with it yourself! Make a JS file, create variables and functions, run them in Node, and learn as much as you can. Tackling closures without an understanding of scope is like climbing a mountain without the mountain.
+We recommend reading this section more than once before moving on. If you are unfamiliar with JavaScript scope and how it works, you'll want to play around with it yourself! Make a JS file, create variables and functions, run them in Node, and learn as much as you can. Tackling closures without an understanding of scope is like climbing a mountain without the mountain.
 
 ## The Solution
 
-
+We've seen that the problem with the previously proposed solution was that the value of `index` kept changing. What if we could find a way to guarantee that the variable won't change ever again? Putting it another way, if we could make the variable 'safe' from the rest of the program, then each function should have its own secret message.
 
 
 

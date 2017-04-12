@@ -157,13 +157,122 @@ Why is the printed index `3` instead of `2`? The values index takes are `0`, `1`
 
 We recommend reading this section more than once before moving on. If you are unfamiliar with JavaScript scope and how it works, you'll want to play around with it yourself! Make a JS file, create variables and functions, run them in Node, and learn as much as you can. Tackling closures without an understanding of scope is like climbing a mountain without the mountain.
 
-## The Solution
+## Hiding Information
 
 We've seen that the problem with the previously proposed solution was that the value of `index` kept changing. What if we could find a way to guarantee that the variable won't change ever again? Putting it another way, if we could make the variable 'safe' from the rest of the program, then each function should have its own secret message.
 
+Closures work by protecting their variables from change. It sounds fancy, but they are simply taking advantage of concepts you already know about! Let's work toward the knowledge required to write our own closure and fix the problem.
 
+The first thing to remember is that scope in JavaScript is *functional*. That is, a variable (or a parameter!) created inside of a function does not exist outside of the function. We can use this to protect variables from outside influence.
 
+Let's work toward a closure with our `callMeOnMyCellPhone` example.
 
+```js
+function outerFunction() {
+  var number = 'old number';
+  function callMeOnMyCellPhone() {
+    console.log(number);
+  }
+}
+```
+
+What's changed?
+* we put the `callMeOnMyCellPhone` function into another function called `outerFunction`
+* `outerFunction` defines a variable called `number`
+
+In short, we put the entire `callMeOnMyCellPhone` example into another function!
+
+This isn't quite what we want just yet, but let's talk about what we've accomplished. The variable `number` is not available outside of `outerFunction` where it is defined. It should also be available to the function `callMeOnMyCellPhone` because they are both inside the same function.
+
+We have therefore solved the issue of being able to manipulate `number` wherever we want and seeing the function act different. Unfortunately, this code doesn't really *do* anything yet. All we're doing is defining a function (inside of another function). Let's double check what happens in Node:
+
+```
+> outerFunction();
+undefined
+```
+
+`outerFunction` is not printing or returning anything, so we should expect to just get `undefined`. Our goal is to get at `callMeOnMyCellPhone`. How can we do that? Let's try to return it!
+
+```js
+function outerFunction() {
+  var number = 'old number';
+  function callMeOnMyCellPhone() {
+    console.log(number);
+  }
+  return callMeOnMyCellPhone;
+}
+```
+
+Running this in Node:
+```
+> outerFunction()
+[Function: callMeOnMyCellPhone]
+```
+
+We're getting a function back. Now we need to find a way to call that function. We can call it right off the bat, or save it into a variable to call later. Trying out both:
+
+```js
+outerFunction()(); // prints 'old number'
+var callMe = outerFunction();
+callMe(); // prints 'old number'
+callMe(); // prints 'old number' again
+```
+
+It looks like it remembers the value `'old number'`. Let's now double check that we can't change that value ourselves.
+
+```js
+var callMe = outerFunction();
+callMe(); // prints 'old number'
+number = 'new number';
+callMe(); // prints 'old number'
+```
+
+Like we predicted before, we have no control over the variable `number` that `outerFunction` defined and `callMeOnMyCellPhone` relies on.
+
+We have now officially created a closure! It's not a very useful one because it is incapable of printing anything except `'old number'`. Ideally we can somehow pass `outerFunction` a different number. But we already know how to pass a function information.
+
+```js
+function outerFunction(number) {
+  function callMeOnMyCellPhone() {
+    console.log(number);
+  }
+  return callMeOnMyCellPhone;
+}
+```
+
+The only change is to delete the line where we defined `number`, and instead add a parameter to `outerFunction`. Let's first try this out without passing it anything.
+
+```js
+var callMe = outerFunction();
+callMe(); // undefined
+```
+
+We got `undefined`, which makes sense because we didn't pass anything. Let's try to pass a new number.
+
+```js
+var callMe = outerFunction('555 5555');
+var callMeYesterday = outerFunction('old number');
+var callMeTomorrow = outerFunction("tomorrow's number");
+callMe(); // 555 5555
+callMeYesterday(); // old number
+callMeTomorrow(); // tomorrow's number
+callMe(); // 555 5555
+callMeYesterday(); // old number
+```
+
+`outerFunction` therefore builds for us a little function that prints out a specific thing. It's like a function factory. And the reason we did it was because our previous effort was very fragile - every time we changed the value of the variable `number`, the function changed with it.
+
+Finally, we don't really need to name the inner function `callMeOnMyCellPhone`, or anything at all. Let's return an anonymous function instead.
+
+```js
+function outerFunction(number) {
+  return function() {
+    console.log(number);
+  }
+}
+```
+
+## Back to the Problem
 
 
 
@@ -182,3 +291,4 @@ We've seen that the problem with the previously proposed solution was that the v
 # Additional Resources
 
 https://medium.freecodecamp.com/javascript-closures-explained-by-mailing-a-package-4f23e9885039
+http://stackoverflow.com/a/7464475/659816

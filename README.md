@@ -74,7 +74,7 @@ Event handlers are probably the most common place to find closures. They are res
 
 Let's try to accomplish the following: we want a number of list elements to output some information when clicked. They should print the content of the list element as well as their order (starting at 1, ie. 1, 2, 3, etc.).
 
-Read the code found in `closureAttempt01.js`. Try to figure out what the code will do. When you are done, make sure `index.html` is pointing to `closureAttempt01.js` and open `index.html` in your browser. Open the console and click on each list element.
+Read the code found in `closureAttempt1.js`. Try to figure out what the code will do. When you are done, make sure `index.html` is pointing to `closureAttempt1.js` and open `index.html` in your browser. Open the console and click on each list element.
 
 ...
 
@@ -274,12 +274,48 @@ function outerFunction(number) {
 
 ## Back to the Problem
 
+Reviewing `closureAttempt1.js` again to try to pinpoint the issue:
+
+```js
+for (var index = 0; index < listElements.length; index++) {
+  var listElement = listElements[index];
+  listElement.addEventListener('click', function() {
+    console.log(this.innerHTML);
+    console.log(index);
+    console.log(secretMessages[index]);
+  });
+}
+```
+
+The issue is that `index` keeps changing! Each list element gets an event handler (a function) that refers to whatever value `index` had *at the time it was clicked*, which is `3`, rather than when we added the event handlers (which would be `0`, `1`, or `2`).
+
+We therefore want `index` to be private and unchangeable. What can we do about this? The first thing to note is that the event handler is a function. That's half of a closure! If we want to make `index` private, we have to somehow wrap that portion of the code in a function. We'll then have a function-in-a-function.
+
+Take a look at `closureAttempt2.js`. All we've done is moved 5 lines from inside the for loop into their own function. This solves the problem because, in short, we are passing the outer function a value for `index`. The inner function is able to remember this value and, most importantly, the for loop is unable to affect that value of `index` because it's defined inside of a separate function.
+
+Update `index.html` to point to `closureAttempt2.js` and check for yourself that it works.
 
 
+In the name of repetition, our problem was that we had a variable (`index`) that was accessible to the outside world, meaning that we couldn't rely on it keeping the same value. The two things we used to solve our problem were:
+
+* A function that uses a variable (NOT a parameter).
+  * This is true of the inner functions in all of our examples.
+* The variable needs to be 'private' and safe from outside tampering.
+  * That's why we have an outer function with a parameter.
+
+A closure provides precisely these two things. A function wrapped in a function allows for passing information to the outer function, while the inner function simply remembers that information.
+
+Next, take a look at `closureAttempt3.js`. This is a different way to use closures to solve the same problem. Note that it's not important which solution you choose; we only care that we solved the problem! (and that our code isn't too hard to read)
+
+This solution actually looks closer to how we solved `callMeOnMyCellPhone`. We first notice that `addEventListener` requires a function to be passed into it. We therefore create a function called `getClickHandler` that returns another function, and we call it to get that inner function.
+
+> #### Pep Talk
+Closures are tricky! They use different techniques and require a solid understanding of scope. If you are confused now, the best thing to do is try the exercises. The only way to learn closures is to practice them until they make sense.
+
+> If you are struggling, you can re-read the assignment thus far or check out the additional resources at the bottom.
 
 
-
-
+## Exercise 1
 
 
 

@@ -1,0 +1,17 @@
+
+.here {
+  background-color: red;
+}
+
+.tile {
+  width: 100px;
+  height: 100px;
+  outline: 1px solid red;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}

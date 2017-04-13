@@ -1,4 +1,25 @@
 
+.game {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  /*justify-content: center;*/
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.menu button {
+  width: 200px;
+  height: 30px;
+}
+
+.game-grid {
+}
+
 .here {
   background-color: red;
 }
@@ -7,6 +28,12 @@
   width: 100px;
   height: 100px;
   outline: 1px solid red;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 90px;
+  font-family: arial, helvetica, sans-serif;
 }
 
 .row {

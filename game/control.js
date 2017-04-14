@@ -1,8 +1,5 @@
 
 document.addEventListener('keydown', function(event) {
-  console.log('key pressed');
-
-  console.log(event.keyCode);
   if (clickMenuButton(event.keyCode)) {
     return;
   }
@@ -16,6 +13,33 @@ var initializeTeleport = document.querySelector('button[name=initialize]');
 initializeTeleport.addEventListener('click', function(event) {
   prepareTeleporter();
 });
+
+var initializeTimeMachine = document.querySelector('button[name=initialize-time-machine]');
+initializeTimeMachine.addEventListener('click', function(event) {
+  prepareTimeMachine();
+});
+
+function prepareTimeMachine() {
+  console.log('preparing time machine');
+  var location = { x: character.x, y: character.y };
+
+  var button = document.querySelector('button[name=time-travel]');
+  button.disabled = false;
+
+  // @ASSIGNMENT - FILL THIS LINE IN (part 2) ----------
+  button.addEventListener('click', getTimeTravelListener(location, distanceTraveled));
+  // ------------------------------------------
+}
+
+// @ASSIGNMENT - CREATE THIS FUNCTION (part 2) ----------
+function getTimeTravelListener(location, distance) {
+  return function() {
+    distanceTraveled = distance;
+    teleportCharacter(location);
+    updateDistanceTraveled();
+  }
+}
+// ---------------------------------------------
 
 function clickMenuButton(keyCode) {
   if (event.keyCode === 13) {
@@ -38,7 +62,7 @@ function prepareTeleporter() {
 
   // @ASSIGNMENT - FILL THIS LINE IN ----------
   button.addEventListener('click', getTeleportListener(location));
-  // -----------------------------------------
+  // ------------------------------------------
 }
 
 // @ASSIGNMENT - CREATE THIS FUNCTION ----------
@@ -47,7 +71,7 @@ function getTeleportListener(location) {
     teleportCharacter(location);
   }
 }
-// --------------------------------------------
+// ---------------------------------------------
 
 function removeActiveTeleporter() {
   var previouslyActive = document.querySelector('.active');
@@ -111,6 +135,5 @@ function updateCharacterPosition(newPosition) {
 
 function getTile(position) {
   var query = '.row' + position.y + ' .column' + position.x;
-  console.log(query);
   return document.querySelector(query);
 }

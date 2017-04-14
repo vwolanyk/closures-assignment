@@ -48,7 +48,7 @@ We can see that it did not 'remember' the name Alfred, or anything at all. The f
 Let's try another example that is NOT a closure. It will, however, be closer to what we need to do to make one.
 
 ```js
-var number = old number;
+var number = 'old number';
 function callMeOnMyCellPhone() {
   console.log(number);
 }
@@ -328,3 +328,4 @@ Closures are tricky! They use different techniques and require a solid understan
 
 https://medium.freecodecamp.com/javascript-closures-explained-by-mailing-a-package-4f23e9885039
 http://stackoverflow.com/a/7464475/659816
+http://stackoverflow.com/questions/111102/how-do-javascript-closures-work

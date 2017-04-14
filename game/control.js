@@ -3,10 +3,63 @@ document.addEventListener('keydown', function(event) {
   console.log('key pressed');
 
   console.log(event.keyCode);
+  if (clickMenuButton(event.keyCode)) {
+    return;
+  }
+
   var newPosition = getNewPosition(event.keyCode);
   if (!newPosition) { return; }
   moveCharacter(newPosition);
 });
+
+var initializeTeleport = document.querySelector('button[name=initialize]');
+initializeTeleport.addEventListener('click', function(event) {
+  prepareTeleporter();
+});
+
+function clickMenuButton(keyCode) {
+  if (event.keyCode === 13) {
+    document.querySelector('button[name=initialize]').click();
+    return true;
+  } else if (event.keyCode === 32) {
+    document.querySelector('button[name=teleport]').click();
+    return true;
+  }
+}
+
+function prepareTeleporter() {
+  var location = { x: character.x, y: character.y };
+
+  removeActiveTeleporter(); // remove previously active teleporter
+  addActiveTeleporter(location);
+
+  var button = document.querySelector('button[name=teleport]');
+  button.disabled = false;
+
+  // @ASSIGNMENT - FILL THIS LINE IN ----------
+  button.addEventListener('click', getTeleportListener(location));
+  // -----------------------------------------
+}
+
+// @ASSIGNMENT - CREATE THIS FUNCTION ----------
+function getTeleportListener(location) {
+  return function() {
+    teleportCharacter(location);
+  }
+}
+// --------------------------------------------
+
+function removeActiveTeleporter() {
+  var previouslyActive = document.querySelector('.active');
+  if (previouslyActive) {
+    previouslyActive.classList.remove('active');
+  }
+}
+
+function addActiveTeleporter(location) {
+  var tile = getTile(location);
+  tile.classList.add('active');
+}
 
 function getNewPosition(keyCode) {
   var newPosition = {x: character.x, y: character.y };
@@ -29,11 +82,26 @@ function getNewPosition(keyCode) {
 }
 
 function moveCharacter(newPosition) {
+  teleportCharacter(newPosition);
+  addDistanceTraveled();
+}
+
+function teleportCharacter(newPosition) {
   var oldTile = getTile(character);
   oldTile.classList.remove('here');
   updateCharacterPosition(newPosition);
   var newTile = getTile(newPosition);
   newTile.classList.add('here');
+}
+
+function addDistanceTraveled() {
+  distanceTraveled += 1;
+  updateDistanceTraveled();
+}
+
+function updateDistanceTraveled() {
+  var distanceDisplay = document.querySelector('#distance');
+  distanceDisplay.innerHTML = distanceTraveled + 'm';
 }
 
 function updateCharacterPosition(newPosition) {

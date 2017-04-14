@@ -1,6 +1,7 @@
 
 var width = 5,
     height = 5,
+    distanceTraveled = 0,
     gameBox = document.querySelector('.game-grid');
 
 
@@ -21,4 +22,4 @@ for (var i = 0; i < height; i++) {
   }
 }
 
-moveCharacter(character);
+teleportCharacter(character);

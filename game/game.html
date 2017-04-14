@@ -3,20 +3,22 @@
   <head>
     <meta charset="utf-8">
     <title>Closures Game</title>
-    <script type="text/javascript" src="control.js"></script>
     <link rel="stylesheet" href="game.css">
   </head>
   <body>
 
     <div class="game">
       <div class="menu">
+        <h2>Distance Traveled: <span id='distance'>0m</span></h2>
         <button type="button" name="initialize">Initialize Teleporter</button>
-        <button type="button" name="teleport">Teleport!</button>
+        <button type="button" name="teleport" disabled>Teleport!</button>
       </div>
       <div class="game-grid"></div>
     </div>
 
+    <script type="text/javascript" src="control.js"></script>
     <script type="text/javascript" src="build.js"></script>
+    <script type="text/javascript" src="objectives.js"></script>
 
 
   </body>

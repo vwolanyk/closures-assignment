@@ -1,9 +1,165 @@
 
 ### Plan
-* a function is a set of instructions
-* we can't really pass data to an event handler
-* how do we get an event handler to remember something? (eg. a number to print out/alert)
 
+
+# Variable scope
+
+This assignment will cover variable scope in JavaScript. In doing so, we will explore one of the more complex scope-related concepts: closures. By the end, you should have an understanding of how to create local variables in JavaScript, how and why to avoid global variables, and how to create closures.
+
+## Pre-requisites
+
+* functions
+* variables
+* loops
+
+
+## Overview
+
+*Scope* describes what is available at any given time and place in your program. For example, a variable is only *in scope* after it is declared. Here is a simple example:
+
+```js
+number += 5;
+var number = 0;
+```
+
+The above example throws an error on the first line; `test is not defined`. This is because `test` is not *in scope* until the second line. Let's reorder the two lines:
+
+```js
+var number = 0;
+number += 5;
+```
+
+Now we've declared a variable called `number` on the first line and initialized it to `0`. `number` is now in scope, and so we successfully add 5 to it.
+
+If all programs were this simple, programming would be easy! Let's explore some specific cases.
+
+<!-- It is important to remember that, as in many other languages, JavaScript has multiple types of variables: *local* and *global*. -->
+
+
+## Scope is Functional
+
+Scope JavaScript is considered to be *functional*. That is, any variable you declare is available anywhere inside that function, and is NOT available outside of the function.
+
+Look at the following function:
+
+```js
+function walk() {
+  var target = 'home';
+  console.log('Target:', target);
+}
+```
+
+It declares a variable and prints out a message. We should therefore see that message if we call `walk()`:
+
+```js
+walk(); // Target: home
+```
+
+What if we try to simply print out the value of `target`?
+
+```js
+console.log('Target:', target); // ReferenceError: target is not defined
+```
+
+Because the variable was declared inside the function, it is not available outside of the function.
+
+What if we declare a variable outside of a function? Can we access it inside? Let's try that out:
+
+```js
+var runTo = 'the store';
+function run() {
+  console.log('Run to', runTo);
+}
+run(); // Target: the store
+```
+
+The answer is yes! Unlike Ruby, a variable declared outside of a function is accessible inside of any functions on the same level.
+
+JavaScript uses functions all over the place. It is likely that you've been using them more than you realize! It is important to know, however, because scope depends entirely on it. Here is an example of an issue you might run into with functional scope:
+
+```js
+// wait for the document to be ready
+document.addEventListener("DOMContentLoaded", function() {
+
+  function assembleMouseTrap() {
+    // ...
+  }
+
+
+});
+
+assembleMouseTrap();
+```
+
+This example will error with:
+
+```
+ReferenceError: assembleMouseTrap is not defined
+```
+
+Why? Because you are actually defining a function inside of another function. Look closely at the `document.addEventListener` line and you'll notice that it ends with `function() {`. `assembleMouseTrap` is therefore defined inside of that function, and so it is not available outside of that function.
+
+As it turns out, this happens all the time in JavaScript. As we'll see later, we sometimes declare functions within functions intentionally!
+
+### Order matters
+
+Let's take the `run()` example and tweak it so that we declare the variable after we define the function. (Make sure to reload `node`!)
+
+```js
+function run() {
+  console.log('Target:', target);
+}
+run(); // ReferenceError: target is not defined
+var target = 'the store';
+run(); // Target: the store
+```
+
+We got an error when trying to use the `run()` function. We then defined `target`, and it worked the second time. So the variable `target` simply had to be *in scope* at the time we ran `run()`.
+
+## Exercise 0
+
+
+
+
+### Blocks
+
+We've said already that JavaScript has *functional* scope. How does scope work with blocks? For example, a `for` loop?
+
+```js
+for (var i = 0; i < 5; i++) {
+  var greeting = 'Hi Friend!';
+}
+console.log(greeting); // Hi Friend!
+```
+
+Even though we defined a variable inside of a for loop, it was accessible to us outside (after) the loop. This is because blocks have no special value in JavaScript. It's functions or nothing!
+
+
+## Exercise 0
+
+1. Write a function that takes a parameter. Print out the parameter both inside the function and outside of it and record what happens.
+
+1.
+
+
+
+
+## Local Variables
+
+
+
+
+## Global Variables
+
+
+### Why are global variables bad?
+
+--> ALWAYS USE `var`
+
+## Exercise N
+
+
+## Hiding Information
 
 
 

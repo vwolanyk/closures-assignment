@@ -20,6 +20,10 @@
 .game-grid {
 }
 
+.game-grid.time-machine-prepared {
+  border: 3px black solid;
+}
+
 .here {
   background-color: red;
 }
@@ -38,6 +42,7 @@
   align-items: center;
   font-size: 90px;
   font-family: arial, helvetica, sans-serif;
+  box-sizing: border-box;
 }
 
 .row {

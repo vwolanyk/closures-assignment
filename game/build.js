@@ -5,8 +5,9 @@ var width = 5,
     gameBox = document.querySelector('.game-grid');
 
 
-
-var character = { x: 0, y: 0 };
+var startX = parseInt(Math.random() * width);
+var startY = parseInt(Math.random() * height);
+var character = { x: startX, y: startY };
 
 for (var i = 0; i < height; i++) {
   var newRow = document.createElement('div');
@@ -23,3 +24,16 @@ for (var i = 0; i < height; i++) {
 }
 
 teleportCharacter(character);
+
+var resetGameButton = document.querySelector('button[name=reset-game]');
+resetGameButton.addEventListener('click', getResetGameFunction(startX, startY));
+
+function getResetGameFunction(startX, startY) {
+  return function() {
+    teleportCharacter({ 'x': startX, 'y': startY });
+
+    distanceTraveled = 0;
+    updateDistanceTraveled();
+  }
+  // need to reset teleporter, time machine
+}

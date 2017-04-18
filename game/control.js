@@ -1,9 +1,5 @@
 
 document.addEventListener('keydown', function(event) {
-  if (clickMenuButton(event.keyCode)) {
-    return;
-  }
-
   var newPosition = getNewPosition(event.keyCode);
   if (!newPosition) { return; }
   moveCharacter(newPosition);
@@ -25,6 +21,7 @@ function prepareTimeMachine() {
 
   var button = document.querySelector('button[name=time-travel]');
   button.disabled = false;
+  document.querySelector('.game-grid').classList.add('time-machine-prepared');
 
   // @ASSIGNMENT - FILL THIS LINE IN (part 2) ----------
   button.addEventListener('click', getTimeTravelListener(location, distanceTraveled));
@@ -40,16 +37,6 @@ function getTimeTravelListener(location, distance) {
   }
 }
 // ---------------------------------------------
-
-function clickMenuButton(keyCode) {
-  if (event.keyCode === 13) {
-    document.querySelector('button[name=initialize]').click();
-    return true;
-  } else if (event.keyCode === 32) {
-    document.querySelector('button[name=teleport]').click();
-    return true;
-  }
-}
 
 function prepareTeleporter() {
   var location = { x: character.x, y: character.y };

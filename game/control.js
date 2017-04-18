@@ -85,6 +85,8 @@ function control(character, width, height, distanceTraveled) {
       newPosition.x += 1; // move right
     } else if(keyCode === 40 || keyCode === 83) {
       newPosition.y += 1; // move down
+    } else {
+      return false;
     }
 
     if (newPosition.x < 0 || newPosition.x >= width ||

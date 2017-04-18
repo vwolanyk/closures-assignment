@@ -2,8 +2,11 @@
 function placeCharacter(character, newPosition) {
   if (newPosition === undefined) { newPosition = character; }
 
-  var oldTile = getTile(character);
-  oldTile.classList.remove('here');
+  var tiles = document.querySelectorAll('.tile');
+  tiles.forEach(function(tile) {
+    tile.classList.remove('here');
+  });
+
   updateCharacterPosition(character, newPosition);
   var newTile = getTile(newPosition);
   newTile.classList.add('here');

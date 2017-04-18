@@ -1,39 +1,53 @@
 
-var width = 5,
-    height = 5,
-    distanceTraveled = 0,
-    gameBox = document.querySelector('.game-grid');
 
+newGame();
 
-var startX = parseInt(Math.random() * width);
-var startY = parseInt(Math.random() * height);
-var character = { x: startX, y: startY };
+function newGame() {
+  var width = 5,
+      height = 5,
+      distanceTraveled = 0,
+      gameBox = document.querySelector('.game-grid');
 
-for (var i = 0; i < height; i++) {
-  var newRow = document.createElement('div');
-  newRow.classList.add('row');
-  newRow.classList.add('row' + i);
-  gameBox.appendChild(newRow);
+  var startX = parseInt(Math.random() * width);
+  var startY = parseInt(Math.random() * height);
+  var character = { x: startX, y: startY };
 
-  for (var j = 0; j < width; j++) {
-    var newTile = document.createElement('div');
-    newTile.classList.add('tile');
-    newTile.classList.add('column' + j);
-    newRow.appendChild(newTile);
+  buildGrid(gameBox, width, height);
+  setupResetGame(character, startX, startY, distanceTraveled);
+  placeCharacter(character);
+
+  control(character, width, height, distanceTraveled);
+}
+
+function buildGrid(container, width, height) {
+  for (var i = 0; i < height; i++) {
+    var newRow = document.createElement('div');
+    newRow.classList.add('row');
+    newRow.classList.add('row' + i);
+    container.appendChild(newRow);
+
+    addTilesToRow(newRow, width);
   }
 }
 
-teleportCharacter(character);
+function addTilesToRow(row, quantity) {
+  for (var i = 0; i < quantity; i++) {
+    var newTile = document.createElement('div');
+    newTile.classList.add('tile');
+    newTile.classList.add('column' + i);
+    row.appendChild(newTile);
+  }
+}
 
-var resetGameButton = document.querySelector('button[name=reset-game]');
-resetGameButton.addEventListener('click', getResetGameFunction(startX, startY));
 
-function getResetGameFunction(startX, startY) {
-  return function() {
-    teleportCharacter({ 'x': startX, 'y': startY });
+function setupResetGame(character, startX, startY, distanceTraveled) {
+  var resetGameButton = document.querySelector('button[name=reset-game]');
+  resetGameButton.addEventListener('click', function(event) {
+    placeCharacter(character, { 'x': startX, 'y': startY });
 
     distanceTraveled = 0;
-    updateDistanceTraveled();
-  }
-  // need to reset teleporter, time machine
+    updateDistanceWalked(distanceTraveled);
+    // need to reset teleporter, time machine
+  });
+
 }

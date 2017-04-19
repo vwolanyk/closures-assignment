@@ -15,7 +15,8 @@ for (var index = 0; index < listElements.length; index++) {
   });
 }
 
-// // this example works
+// // this example works - using forEach()
+
 // listElements.forEach(function(element, index) {
 //
 //   element.addEventListener('click', function() {

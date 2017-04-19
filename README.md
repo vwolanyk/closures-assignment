@@ -473,6 +473,12 @@ Closures are tricky! They use different techniques and require a solid understan
 
 ## Exercise 1
 
+[[ CHECK OUT `closure_exercises.js` ]]
+
+## Exercise 2
+
+[[ CHECK OUT THE @ASSIGNMENT TAGS IN THE `game/` FOLDER ]]
+
 
 
 

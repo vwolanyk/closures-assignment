@@ -20,7 +20,6 @@ function getTile(position) {
 function updateCharacterPosition(character, newPosition) {
   character.x = newPosition.x;
   character.y = newPosition.y;
-  // @TODO why not just do `character = newPosition`?
 }
 
 function updateDistanceWalked(distanceTraveled) {

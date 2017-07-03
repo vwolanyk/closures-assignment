@@ -3,6 +3,7 @@
 var helloWorld = getHelloWorldFunction();
 
 // FILL THIS IN --------------------------
+// HINT: look below to see how the function is being used. You need to make the below code work as indicated.
 function getHelloWorldFunction() {
   var message = "Hello world!";
   return function() {

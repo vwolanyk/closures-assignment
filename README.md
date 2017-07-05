@@ -14,7 +14,9 @@ This assignment will cover variable scope in JavaScript. In doing so, we will ex
 
 ## How to follow along
 
-You'll get the most out of this assignment by trying out for yourself all of the examples used. Try making an empty file, eg. `test.js`, and simply running `node test.js` whenever you want to try out some code. There will also be exercises.
+You'll get the most out of this assignment by trying out for yourself all of the examples provided. Make an empty file, eg. `test.js`, and simply running `node test.js` whenever you want to try out some code. This allows you to tweak code and try it again! Add `console.log()` statements if you want to see output in your terminal.
+
+Record any exercise answers in a separate file called `scope_answers.md`. There will also be exercises related to closures at the end, but these will direct you accordingly.
 
 
 ## Overview
@@ -158,7 +160,7 @@ We can see that any defined variable is available anywhere 'below' its current l
 `doStuffSubFunction()` DOES NOT have access to `performActionsSubFunction()`, because it is not defined 'above' or 'beside'.
 
 
-## Exercise 0
+## Exercise 1
 
 What is the value output in the given `console.log()` statements? Read them and guess *before* running the code. For each answer, explain (keep it short) why the output came out that way.
 
@@ -254,7 +256,7 @@ secondIdea();
 
 
 
-### Blocks
+## Blocks
 
 We've said already that JavaScript has *functional* scope. How does scope work with blocks? For example, a `for` loop?
 
@@ -290,34 +292,81 @@ var newStorePrices = storePrices.map(doublePrice);
 console.log(newPrice); // ReferenceError: newPrice is not defined
 ```
 
-Now it's much clearer that `newPrice` is defined somewhere that is inaccessible - 'below' our current level in the code. It is therefore only accessible inside of that function.
+Now it's much clearer that `newPrice` is defined somewhere inaccessible - 'below' our current level in the code. It is therefore only accessible inside of that function.
+
+To recap - blocks in JavaScript are NOT special (unlike blocks in Ruby). They do not get their own scope. Scope is based on functions.
 
 
-<!-- ## Exercise 1
+## Exercise 2
 
-1. Write a function that takes a parameter. Print out the parameter both inside the function and outside of it and record what happens.
+Try to figure out what will happen with each `console.log()` statement before running it. Give a short answer about why it works (or does not work!) the way it does.
 
-1. -->
+```js
+function buildHouse(address) {
+  // ... house gets built
+  return 'Building house at ' + address;
+}
+buildHouse('123 Happy St.');
+console.log(address);
+```
+
+```js
+var determined = false;
+if (determined) {
+  var smoothie = 'strawberry banana'; // this is BAD - why?
+}
+console.log(smoothie);
+```
+
+```js
+for (var i = 0; i < 5; i++) {
+  // ...
+}
+
+console.log(i);
+```
+
+```js
+var items = ['glasses', 'toothpaste', 'wallet'];
+items.forEach(function(item) {
+  var lastItem = item;
+});
+console.log(lastItem);
+```
 
 
 
 
-## Local Variables
+## Local vs Global Variables
+
+All of the examples so far have used local variables. This is because you should always avoid global variables. Although they can be very confusing, they are attractive to beginners because they seem easier at first.
+
+Global variables are accessible in ANY file, anywhere in your application. That means that the following code works:
+
+```js
+function setAvailable() {
+  available = true;
+}
+setAvailable();
+console.log(available); // true
+```
+
+Note that this is exactly opposite to what we just learned about scope. To make this even more confusing, the following (nearly identical) code throws an error:
+
+```js
+function setAvailable() {
+  available = true;
+}
+console.log(available); // ReferenceError: available is not defined
+```
+
+The only difference here is that we didn't call the `setAvailable()` function. In other words, sometimes `console.log(available)` works, and sometimes it errors. Now imagine you have many files, thousands of lines of code, and you are expecting `available` to be set. Instead, you get an error. Debugging problems like these are very difficult because the problem can be anywhere.
+
+> ##### Summary
+* Rethink your solution if you are tempted to use global variables.
+* Always use `var` to set new variables.
 
 
-
-
-## Global Variables
-
-
-### Why are global variables bad?
-
---> ALWAYS USE `var`
-
-## Exercise N
-
-
-## Hiding Information
 
 
 
@@ -329,18 +378,18 @@ Now it's much clearer that `newPrice` is defined somewhere that is inaccessible 
 
 # Closures
 
-This assignment will provide an explanation of closures and a walkthrough of how to use them.
+This part of the assignment will provide an explanation of closures and a walkthrough of how to use them.
 
 Some important notes:
 
 * Closures are a very difficult concept. If you finish this assignment without being able to explain what a closure is, don't feel too bad about it. You should hopefully have some idea about them.
-* You *will* use closures, whether you understand them or not. This is basically unavoidable in modern JavaScript wed applications.
-* You have probably used closures already!
+* You *will* use closures, however, whether you understand them or not. This is basically unavoidable in modern JavaScript wed applications.
+* You may have used closures already without realizing it!
 * The only way to understand closures is to use them. A lot.
 
 ## What is a closure?
 
-A *Closure* is a function that remembers a piece of information, and remembers it no matter what. The application can do anything it wants, but the function (or closure) still hangs on to that old piece of information. Let's first explore a couple of things that are NOT closures.
+A *closure* is a function that remembers a piece of information, and remembers it no matter what. The application can do anything it wants, but the function (or closure) still hangs on to that old piece of information. Let's first explore a couple of things that are NOT closures.
 
 ```js
 function helloWorld() {
@@ -348,7 +397,7 @@ function helloWorld() {
 }
 ```
 
-This isn't a closure; it's just a function. It's not remembering any data. We've typed `"Hello world!"` in there, but that is hardcoded, and so we won't count it as 'remembering'.
+This isn't a closure; it's just a function. It's not remembering any data. We've typed `"Hello world!"` in there, but it is hardcoded, and so we won't count it as 'remembering'.
 
 ```js
 function sayHello(name) {
@@ -394,7 +443,7 @@ Event handlers are probably the most common place to find closures. They are res
 
 Let's try to accomplish the following: we want a number of list elements to output some information when clicked. They should print the content of the list element as well as their order (starting at 1, ie. 1, 2, 3, etc.).
 
-Read the code found in `closureAttempt1.js`. Try to figure out what the code will do. When you are done, make sure `index.html` is pointing to `closureAttempt1.js` and open `index.html` in your browser. Open the console and click on each list element.
+Read the code found in `closureAttempt1.js`. Try to figure out what the code will do. When you are done, make sure `index.html` is pointing to `closureAttempt1.js` and open `index.html` in your browser - it will NOT run in node. Open the console and click on each list element.
 
 ...
 
@@ -448,7 +497,7 @@ The function was relying on `number`, and so when we pointed `number` to a new v
 > ##### JavaScript Variable Scope
 Remember how scope in JavaScript works? A variable defined *outside* of a function is available *inside* that function. We haven't re-declared `number` inside the function, so `number` inside the function is identical to `number` outside the function.
 
-The example in the browser was actually very similar, despite looking more complicated:
+The example in the browser was actually very similar (`index` instead of `number`), despite looking more complicated:
 
 ```js
 for (var index = 0; index < listElements.length; index++) {
@@ -475,7 +524,7 @@ So the functions - we are creating 3 of them, one for each list element - are al
 Why is the printed index `3` instead of `2`? The values index takes are `0`, `1`, and `2`. But the for loop actually tries to increase the value of `index` by one again! This means `index` hits `3`, at which point the for loop stops (because `index < listElements.length`). You can always test this by printing out the index of a for loop *after* the loop completes.
 
 
-We recommend reading this section more than once before moving on. If you are unfamiliar with JavaScript scope and how it works, you'll want to play around with it yourself! Make a JS file, create variables and functions, run them in Node, and learn as much as you can. Tackling closures without an understanding of scope is like climbing a mountain without the mountain.
+We recommend reading this section more than once before moving on. If you are unfamiliar with JavaScript scope and how it works, you'll want to play around with it yourself! Make a JS file, create variables and functions, run them in Node, and learn as much as you can. Tackling closures without an understanding of scope is like climbing a mountain without first climbing a hill.
 
 ## Hiding Information
 
@@ -532,10 +581,10 @@ Running this in Node:
 We're getting a function back. Now we need to find a way to call that function. We can call it right off the bat, or save it into a variable to call later. Trying out both:
 
 ```js
-outerFunction()(); // prints 'old number'
 var callMe = outerFunction();
 callMe(); // prints 'old number'
 callMe(); // prints 'old number' again
+outerFunction()(); // prints 'old number'
 ```
 
 It looks like it remembers the value `'old number'`. Let's now double check that we can't change that value ourselves.
@@ -611,7 +660,7 @@ The issue is that `index` keeps changing! Each list element gets an event handle
 
 We therefore want `index` to be private and unchangeable. What can we do about this? The first thing to note is that the event handler is a function. That's half of a closure! If we want to make `index` private, we have to somehow wrap that portion of the code in a function. We'll then have a function-in-a-function.
 
-Take a look at `closureAttempt2.js`. All we've done is moved 5 lines from inside the for loop into their own function. This solves the problem because, in short, we are passing the outer function a value for `index`. The inner function is able to remember this value and, most importantly, the for loop is unable to affect that value of `index` because it's defined inside of a separate function.
+Take a look at `closureAttempt2.js`. All we've done is moved 5 lines from inside the `for` loop into their own function. This solves the problem because, in short, we are passing the outer function a value for `index`. The inner function is able to remember this value and, most importantly, the `for` loop is unable to affect that value of `index` because it's defined inside of a separate function.
 
 Update `index.html` to point to `closureAttempt2.js` and check for yourself that it works.
 
@@ -621,13 +670,13 @@ In the name of repetition, our problem was that we had a variable (`index`) that
 * A function that uses a variable (NOT a parameter).
   * This is true of the inner functions in all of our examples.
 * The variable needs to be 'private' and safe from outside tampering.
-  * That's why we have an outer function with a parameter.
+  * That's why we have an outer function with a parameter. It protects the inner function and acts like a shell.
 
 A closure provides precisely these two things. A function wrapped in a function allows for passing information to the outer function, while the inner function simply remembers that information.
 
 Next, take a look at `closureAttempt3.js`. This is a different way to use closures to solve the same problem. Note that it's not important which solution you choose; we only care that we solved the problem! (and that our code isn't too hard to read)
 
-This solution actually looks closer to how we solved `callMeOnMyCellPhone`. We first notice that `addEventListener` requires a function to be passed into it. We therefore create a function called `getClickHandler` that returns another function, and we call it to get that inner function.
+This solution actually looks closer to how we solved `callMeOnMyCellPhone`. We first notice that `addEventListener` requires a function to be passed into it. We therefore create a function called `getClickHandler` that returns another function (a click handler), and we call it to get that inner function.
 
 > #### Pep Talk
 Closures are tricky! They use different techniques and require a solid understanding of scope. If you are confused now, the best thing to do is try the exercises. The only way to learn closures is to practice them until they make sense.
@@ -636,6 +685,10 @@ Closures are tricky! They use different techniques and require a solid understan
 
 
 ## Exercise 1
+
+The file `closure_exercises.js` provides a number of exercises. Your task is to fill in the missing code. In each example, you are trying to get the code to run successfully. Note that in each example we prove that you have successfully made a closure by modifying the variable value and seeing that the function works as before (ie. nothing has changed).
+
+Note as well that each closure in the exercises simply generates output (ie. `console.log()`). In the real world, closures are made to solve problems, and so they are almost always more complex.
 
 [[ CHECK OUT `closure_exercises.js` ]]
 

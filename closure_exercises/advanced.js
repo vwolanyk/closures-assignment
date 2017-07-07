@@ -1,6 +1,5 @@
 
 var clickCounter = document.querySelector('#clickCountButton');
-console.log(clickCounter);
 clickCounter.addEventListener('click', getClickCountHandler());
 
 // Goal: alert the user how many times the button is clicked.
@@ -10,11 +9,7 @@ clickCounter.addEventListener('click', getClickCountHandler());
 
 // Problem 1: fill in this function
 function getClickCountHandler() {
-  var count = 0;
-  return function() {
-    count += 1;
-    alert("You have clicked this button " + count + " times.")
-  }
+
 }
 
 
@@ -33,11 +28,5 @@ document.addEventListener('keydown', getSecretKeyCodeEventHandler());
 
 function getSecretKeyCodeEventHandler() {
   // FILL THIS IN
-  var secretCode = [];
-  return function(event) {
-    secretCode.push(event.keyCode);
-    if (event.keyCode === 13) { // detect the Enter button
-      alert(secretCode);
-    }
-  }
+
 }

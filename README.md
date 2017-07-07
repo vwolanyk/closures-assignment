@@ -706,7 +706,7 @@ In the name of repetition, our problem was that we had a variable (`secretMessag
 
 A closure provides precisely these two things. A function wrapped in a function allows for passing information to the outer function, while the inner function simply remembers that information.
 
-Next, take a look at `closureAttempt3.js`. This is the same solution! We have simply cleaned it up by using an anonymous function and not setting variables (eg. `firstMessageClickHandler`) if we don't need to.
+Next, take a look at `closureAttempt3.js`. This is the same solution! We have simply cleaned it up by using an anonymous function and not setting variables if we don't need to (eg. `firstMessageClickHandler`).
 
 
 ## Exercise 1

@@ -315,9 +315,11 @@ To recap - blocks in JavaScript are NOT special (unlike blocks in Ruby). They do
 
 ## Exercise 2
 
-Try to figure out what will happen with each `console.log()` statement before running it. Give a short answer about why it works (or does not work!) the way it does.
-@TODO Add possible lead-in for each problem
+For each problem below, READ the code and try to figure out what will happen. Then run the code to see if you're right. Lastly, perform the follow-up rewrite provided after each problem.
 
+
+##### Problem 1
+Can we access the `address` variable outside of the `buildHouse` method?
 ```js
 function buildHouse(address) {
   // ... house gets built
@@ -326,7 +328,11 @@ function buildHouse(address) {
 buildHouse('123 Happy St.');
 console.log(address);
 ```
+Modify the above example so it prints out the address (just the address) instead of erroring. You shouldn't have to modify the function.
 
+##### Problem 2
+
+What's the danger here?  We're declaring a variable inside of an `if` statement.
 ```js
 var determined = false;
 if (determined) {
@@ -334,17 +340,23 @@ if (determined) {
 }
 console.log(smoothie);
 ```
+Modify the above example so that `smoothie` exists whether `determined` is `true` or `false`.
 
-@TODO Add follow-up rewrite questions, eg. "rewrite so that `smoothie` exists regardless of value of `determined`"
+##### Problem 3
 
+What happens to the variable `index` after the for loop finishes?
 ```js
-for (var i = 0; i < 5; i++) {
+for (var index = 0; index < 5; index++) {
   // ...
 }
 
-console.log(i);
+console.log(index);
 ```
+Modify the above example so that the variable `index` is NOT available when we use `console.log`. Remember, scope in JavaScript is *functional*.
 
+##### Problem 4
+
+What's the difference between `for` and `forEach`? One answer is that they differ in scope.
 ```js
 var items = ['glasses', 'toothpaste', 'wallet'];
 items.forEach(function(item) {
@@ -352,6 +364,7 @@ items.forEach(function(item) {
 });
 console.log(lastItem);
 ```
+Modify the above example so that `lastItem` is available when we run `console.log(lastItem)`.
 
 
 

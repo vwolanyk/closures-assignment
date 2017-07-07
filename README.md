@@ -160,18 +160,29 @@ We can see that any defined variable is available anywhere 'below' its current l
 
 
 ## Exercise 1
-@TODO READ
+
 What is the value output in the given `console.log()` statements? Read them and guess *before* running the code. For each answer, explain (keep it short) why the output came out that way.
 
-Some of these might be challenging. Talk with other students to try to understand the result.
+Make sure to READ the code. The goal of this exercise is to train your ability to successfully read and predict the outcome of JavaScript code.
 
-@TODO Add initial example!
+Feel free to talk with other students to try to understand the result.
 
+#### Example:
 ```js
 var dalmatians = 101;
 console.log(dalmatians);
 ```
 
+1. Read the code.
+2. Run the code.
+3. Explain why it worked the way it did.
+
+Answer:
+The second line will output 101 because the variable dalmatians was defined on the line above.
+
+That's it!
+
+#### Exercises:
 ```js
 var lastWord = 'welcome';
 console.log(lastWord);
@@ -390,7 +401,6 @@ Some important notes:
 
 * You *will* use closures whether you understand them or not. This is basically unavoidable in modern JavaScript wed applications.
 * You may have used closures already without realizing it!
-* The only way to understand closures is to use them. A lot.
 
 ## What is a closure?
 

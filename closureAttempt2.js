@@ -1,20 +1,20 @@
 
-var listElements = document.querySelectorAll('li');
-var secretMessages = [
-  "I'll be in the clock tower at midnight.",
-  "The object of interest is in the museum.",
-  "We are progressing you to the next level. Congratulations.",
-];
-
-for (var index = 0; index < listElements.length; index++) {
-  var listElement = listElements[index];
-  addClickEvent(listElement, index);
+function getAlertClickHandler(message) { //
+  function alertWithMessage() {
+    alert(message);
+  }
+  return alertWithMessage;
 }
 
-function addClickEvent(listElement, index) {
-  listElement.addEventListener('click', function() {
-    console.log(this.innerHTML);
-    console.log(index);
-    console.log(secretMessages[index]);
-  });
-}
+var h1 = document.querySelector('h1');
+var paragraph = document.querySelector('p');
+
+// set a secret message, get a click handler that uses that message, and set the event listener
+var secretMessage = "I'll be in the clock tower at midnight.";
+var firstMessageClickHandler = getAlertClickHandler(secretMessage);
+h1.addEventListener('click', firstMessageClickHandler);
+
+// set a secret message, get a click handler that uses that message, and set the event listener
+secretMessage = "The object of interest is in the museum.";
+var secondMessageClickHandler = getAlertClickHandler(secretMessage);
+paragraph.addEventListener('click', secondMessageClickHandler);

@@ -4,14 +4,9 @@
 
 var personToVisit = "best friend";
 // YOUR CODE HERE ------------------------
-var flyTo = getFlyToCityFunction(personToVisit);
 
-function getFlyToCityFunction(person) {
-  return function(targetCity) {
-    console.log("Enjoy your visit to " + targetCity + " to visit your " + person + ".");
-    // console.log("Dear " + personToVisit + ",\n" + city);
-  }
-}
+
+
 // ---------------------------------------
 
 flyTo("Shanghai");

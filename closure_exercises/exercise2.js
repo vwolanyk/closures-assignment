@@ -5,13 +5,9 @@
 var movie = "The Matrix";
 
 // YOUR CODE HERE ------------------------
-var tellFavouriteMovie = getFavouriteMovie(movie);
 
-function getFavouriteMovie(movieName) {
-  return function() {
-    console.log(movieName);
-  }
-}
+
+
 // ---------------------------------------
 
 tellFavouriteMovie(); // The Matrix

@@ -458,7 +458,7 @@ Event handlers are probably the most common place to find closures. They are res
 
 Let's try to accomplish the following: we want a number of list elements to output some information when clicked. They should print the content of the list element as well as their order (starting at 1, ie. 1, 2, 3, etc.).
 
-Read the code found in `closureAttempt1.js`. Try to figure out what the code will do. When you are done, make sure `index.html` is pointing to `closureAttempt1.js` and open `index.html` in your browser - it will NOT run in node. Open the console and click on each list element.
+Read the code found in `closureAttempt1.js`. Try to figure out what the code will do when you click on the `h1` or `p` tags. When you are done, make sure `index.html` is pointing to `closureAttempt1.js` and open `index.html` in your browser - it will NOT run in node. Click on the heading and paragraph elements and observe!
 
 ...
 
@@ -492,7 +492,7 @@ Wait, what? Why did that happen? Let's figure it out.
 
 ## The Big Mistake (that everybody makes)
 
-It would seem reasonable to expect the page to log out both the content of the list element (which it did, successfully) and the appropriate secret message. But it printed out `undefined`! Notice as well that it printed out the number `3` for each click instead of `0`, `1`, and `2`. This means `index` is `3`, and there is no secret message at that index.
+It would seem reasonable to expect the page to provide an alert with the appropriate secret message. But they both provided the same message!
 
 Nearly every JavaScript developer has at some point been tripped up by this exact issue. To understand it, let's go back to our `callMeOnMyCellPhone` example.
 
@@ -512,38 +512,38 @@ The function was relying on `number`, and so when we pointed `number` to a new v
 > ##### JavaScript Variable Scope
 Remember how scope in JavaScript works? A variable defined *outside* of a function is available *inside* that function. We haven't re-declared `number` inside the function, so `number` inside the function is identical to `number` outside the function.
 
-The example in the browser was actually very similar (`index` instead of `number`), despite looking more complicated:
+The example in the browser was actually very similar (`secretMessage` instead of `number`), despite looking more complicated:
 
 ```js
-for (var index = 0; index < listElements.length; index++) {
-  var listElement = listElements[index];
-  listElement.addEventListener('click', function() {
-    console.log(this.innerHTML);
-    console.log(index);
-    console.log(secretMessages[index]);
-  });
+function alertWithMessage() {
+  alert(secretMessage); // note that secretMessage is not set here
 }
+
+var h1 = document.querySelector('h1');
+var paragraph = document.querySelector('p');
+
+var secretMessage = "I'll be in the clock tower at midnight.";
+h1.addEventListener('click', alertWithMessage);
+
+secretMessage = "The object of interest is in the museum.";
+paragraph.addEventListener('click', alertWithMessage);
 ```
 
 The important parts are:
 
-* the for loop is creating a variable called `index`
-* we are creating a function (it's anonymous)
-  * it's getting passed into `listElement.addEventListener`
-* we are printing out `this.innerHTML` (which works)
-* we are printing out `index` and `secretMessages[index]`
+* Create a function that will be our click handler. It relies on `secretMessage` being set.
+* Set `secretMessage` to the first message.
+* Set up a click handler on `h1` to use the click handler.
+* Change `secretMessage` to the second message.
+* Set up a second click handler on `paragraph` to use the click handler.
 
-So the functions - we are creating 3 of them, one for each list element - are all relying on the same variable: `index`. This is exactly what happened with `callMeOnMyCellPhone`: it was relying on `number`. We should therefore expect every click handler to print out the same number.
+Put like that, we can see that both click handlers are relying on the same click handler, which relies on the same variable: `secretMessage`. This is exactly what happened with `callMeOnMyCellPhone`: it was relying on `number`. We should therefore expect clicking either element to alert the same message. We'll come back to this later to see a solution.
 
-> #### Trivia/advanced
-Why is the printed index `3` instead of `2`? The values index takes are `0`, `1`, and `2`. But the for loop actually tries to increase the value of `index` by one again! This means `index` hits `3`, at which point the for loop stops (because `index < listElements.length`). You can always test this by printing out the index of a for loop *after* the loop completes.
-
-
-We recommend reading this section more than once before moving on. If you are unfamiliar with JavaScript scope and how it works, you'll want to play around with it yourself! Make a JS file, create variables and functions, run them in Node, and learn as much as you can. Tackling closures without an understanding of scope is like climbing a mountain without first climbing a hill.
+Try reading this section more than once before moving on. If you are unfamiliar with JavaScript scope and how it works, you'll want to play around with it yourself! Make a JS file, create variables and functions, run them in Node, and learn as much as you can. Tackling closures without an understanding of scope is like climbing a mountain without first climbing a hill.
 
 ## Hiding Information
 
-We've seen that the problem with the previously proposed solution was that the value of `index` kept changing. What if we could find a way to guarantee that the variable won't change ever again? Putting it another way, if we could make the variable 'safe' from the rest of the program, then each function should have its own secret message.
+We've seen that the problem with the previously proposed solution was that the value of `secretMessage` kept changing. What if we could find a way to guarantee that the variable won't change ever again? Putting it another way, if we could make the variable 'safe' from the rest of the program, then each item on the page should have its own secret message.
 
 Closures work by protecting their variables from change. It sounds fancy, but they are simply taking advantage of concepts you already know about! Let's work toward the knowledge required to write our own closure and fix the problem.
 
@@ -661,51 +661,48 @@ function outerFunction(number) {
 Reviewing `closureAttempt1.js` again to try to pinpoint the issue:
 
 ```js
-for (var index = 0; index < listElements.length; index++) {
-  var listElement = listElements[index];
-  listElement.addEventListener('click', function() {
-    console.log(this.innerHTML);
-    console.log(index);
-    console.log(secretMessages[index]);
-  });
+function alertWithMessage() {
+  alert(secretMessage); // note that secretMessage is not set here
 }
+
+var h1 = document.querySelector('h1');
+var paragraph = document.querySelector('p');
+
+var secretMessage = "I'll be in the clock tower at midnight.";
+h1.addEventListener('click', alertWithMessage);
+
+secretMessage = "The object of interest is in the museum.";
+paragraph.addEventListener('click', alertWithMessage);
 ```
 
-The issue is that `index` keeps changing! Each list element gets an event handler (a function) that refers to whatever value `index` had *at the time it was clicked*, which is `3`, rather than when we added the event handlers (which would be `0`, `1`, or `2`).
+The issue is that `secretMessage` keeps changing! Each item on the page (the `h1` and `p` tags) gets an event handler (a function) that refers to whatever value `secretMessage` had *at the time it was clicked*, which is the always second message, rather than when we added the event handlers.
 
-We therefore want `index` to be private and unchangeable. What can we do about this? The first thing to note is that the event handler is a function. That's half of a closure! If we want to make `index` private, we have to somehow wrap that portion of the code in a function. We'll then have a function-in-a-function.
+We therefore want `secretMessage` to be private and unchangeable. What can we do about this? The first thing to note is that the event handler is a function. That's half of a closure! If we want to make `secretMessage` private, we have to somehow wrap that portion of the code in a function. We'll then have a function-in-a-function.
 
-Take a look at `closureAttempt2.js`. All we've done is moved 5 lines from inside the `for` loop into their own function. This solves the problem because, in short, we are passing the outer function a value for `index`. The inner function is able to remember this value and, most importantly, the `for` loop is unable to affect that value of `index` because it's defined inside of a separate function.
+Take a look at `closureAttempt2.js`. All we've done is moved the setting of event handlers into their own functions. This solves the problem because we are passing the outer function a value for `secretMessage`. The inner function (the event handler itself) is able to remember this value (the parameter `message`) and, most importantly, the change in value of `secretMessage` is unable to affect that value of the parameter `message` because `message` is defined inside of a function (as a parameter).
 
 Update `index.html` to point to `closureAttempt2.js` and check for yourself that it works.
 
 
-In the name of repetition, our problem was that we had a variable (`index`) that was accessible to the outside world, meaning that we couldn't rely on it keeping the same value. The two things we used to solve our problem were:
+In the name of repetition, our problem was that we had a variable (`secretMessage`) that was accessible to the outside world, meaning that we couldn't rely on it keeping the same value. The two things we used to solve our problem were:
 
-* A function that uses a variable (NOT a parameter).
-  * This is true of the inner functions in all of our examples.
+* A function that uses a variable without defining it.
+  * This is true of the _inner_ functions in all of our examples.
 * The variable needs to be 'private' and safe from outside tampering.
   * That's why we have an outer function with a parameter. It protects the inner function and acts like a shell.
 
 A closure provides precisely these two things. A function wrapped in a function allows for passing information to the outer function, while the inner function simply remembers that information.
 
-Next, take a look at `closureAttempt3.js`. This is a different way to use closures to solve the same problem. Note that it's not important which solution you choose; we only care that we solved the problem! (and that our code isn't too hard to read)
-
-This solution actually looks closer to how we solved `callMeOnMyCellPhone`. We first notice that `addEventListener` requires a function to be passed into it. We therefore create a function called `getClickHandler` that returns another function (a click handler), and we call it to get that inner function.
-
-> #### Pep Talk
-Closures are tricky! They use different techniques and require a solid understanding of scope. If you are confused now, the best thing to do is try the exercises. The only way to learn closures is to practice them until they make sense.
-
-> If you are struggling, you can re-read the assignment thus far or check out the additional resources at the bottom.
+Next, take a look at `closureAttempt3.js`. This is the same solution! We have simply cleaned it up by using an anonymous function and not setting variables (eg. `firstMessageClickHandler`) if we don't need to.
 
 
 ## Exercise 1
 
-The file `closure_exercises.js` provides a number of exercises. Your task is to fill in the missing code. In each example, you are trying to get the code to run successfully. Note that in each example we prove that you have successfully made a closure by modifying the variable value and seeing that the function works as before (ie. nothing has changed).
+The file `closure_exercises.js` provides a number of exercises. Your task is to fill in the missing code. In each example, you are trying to get the code to run successfully. Use the code at the top and bottom of the exercises to determine what you need to accomplish.
 
 Note as well that each closure in the exercises simply generates output (ie. `console.log()`). In the real world, closures are made to solve problems, and so they are almost always more complex.
 
-[[ CHECK OUT `closure_exercises.js` ]]
+
 
 ## Exercise 2
 

@@ -1,27 +1,13 @@
 
-var listElements = document.querySelectorAll('li');
-var secretMessages = [
-  "I'll be in the clock tower at midnight.",
-  "The object of interest is in the museum.",
-  "We are progressing you to the next level. Congratulations.",
-];
-
-for (var index = 0; index < listElements.length; index++) {
-  var listElement = listElements[index];
-  listElement.addEventListener('click', function() {
-    console.log(this.innerHTML);
-    console.log(index);
-    console.log(secretMessages[index]);
-  });
+function alertWithMessage() {
+  alert(secretMessage); // note that secretMessage is not set here
 }
 
-// // this example works - using forEach()
+var h1 = document.querySelector('h1');
+var paragraph = document.querySelector('p');
 
-// listElements.forEach(function(element, index) {
-//
-//   element.addEventListener('click', function() {
-//     console.log(this.innerHTML);
-//     console.log(index + 1);
-//   })
-//
-// });
+var secretMessage = "I'll be in the clock tower at midnight.";
+h1.addEventListener('click', alertWithMessage);
+
+secretMessage = "The object of interest is in the museum.";
+paragraph.addEventListener('click', alertWithMessage);

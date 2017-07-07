@@ -1,20 +1,15 @@
 
-var listElements = document.querySelectorAll('li');
-var secretMessages = [
-  "I'll be in the clock tower at midnight.",
-  "The object of interest is in the museum.",
-  "We are progressing you to the next level. Congratulations.",
-];
-
-for (var index = 0; index < listElements.length; index++) {
-  var listElement = listElements[index];
-  listElement.addEventListener('click', getClickHandler(index));
-}
-
-function getClickHandler(index) {
+function getAlertClickHandler(message) { //
   return function() {
-    console.log(this.innerHTML);
-    console.log(index);
-    console.log(secretMessages[index]);
-  };
+    alert(message);
+  }
 }
+
+var h1 = document.querySelector('h1');
+var paragraph = document.querySelector('p');
+
+var secretMessage = "I'll be in the clock tower at midnight.";
+h1.addEventListener('click', getAlertClickHandler(secretMessage));
+
+secretMessage = "The object of interest is in the museum.";
+paragraph.addEventListener('click', getAlertClickHandler(secretMessage));

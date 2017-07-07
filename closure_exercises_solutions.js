@@ -1,19 +1,21 @@
 
-// Most basic closure example -- no arguments (but kind of pointless)
-var helloWorld = getHelloWorldFunction();
+var message = "Hello world!";
+var helloWorld = getPrintFunction(message);
 
-// FILL THIS IN --------------------------
-// HINT: look below to see how the function is being used. You need to make the below code work as indicated.
-function getHelloWorldFunction() {
+// You will have to fill in the below section on the other exercises.
+// Here we've filled it in to give you an idea of the code you'll have to write.
+// The important parts are: creating a function, and inside of that, returning another function that does what we want.
+// ----------------------------------------
+function getPrintFunction(message) {
   var message = "Hello world!";
   return function() {
     console.log(message);
   }
 }
-// ---------------------------------------
+// ----------------------------------------
 
 helloWorld(); // Hello world!
-message = "Goodbye!";
+message = "something else";
 helloWorld(); // Hello world!
 
 
@@ -22,10 +24,10 @@ helloWorld(); // Hello world!
 
 
 // Closure example that involves an argument
-var number = 3;
-var printNumber = getPrintNumberFunction(number);
+var printNumberThree = getPrintNumberFunction(3);
+var printNumberFive = getPrintNumberFunction(5);
 
-// FILL THIS IN --------------------------
+// YOUR CODE HERE ------------------------
 
 function getPrintNumberFunction(number) {
   return function() {
@@ -34,20 +36,20 @@ function getPrintNumberFunction(number) {
 }
 // ---------------------------------------
 
-printNumber(); // 3
-number = 5;
-printNumber(); // 3
+printNumberThree(); // 3
+printNumberFive(); // 5
 
 
 
 
 
 
-// Another closure example that involves an argument
+// This example proves that the data in the closure is protected from the outside.
+// You'll have to set up a variable called tellFavouriteMovie to be a function that remembers the value "The Matrix".
+// If you're stuck, check the previous exercise!
 var movie = "The Matrix";
-// Note that you will have to
 
-// FILL THIS IN --------------------------
+// YOUR CODE HERE ------------------------
 var tellFavouriteMovie = getFavouriteMovie(movie);
 
 function getFavouriteMovie(movieName) {
@@ -58,7 +60,7 @@ function getFavouriteMovie(movieName) {
 // ---------------------------------------
 
 tellFavouriteMovie(); // The Matrix
-movie = "Primer";
+movie = "Primer"; // (has no effect on next method call)
 tellFavouriteMovie(); // The Matrix
 
 
@@ -68,13 +70,13 @@ tellFavouriteMovie(); // The Matrix
 
 
 
-// Multiple arguments
+// Multiple arguments!
 
 var sandwiches = 2,
     burgers = 3;
 
-// FILL THIS IN --------------------------
-var theUsual = getUsualOrderFunction(sandwiches, burgers);
+var theUsual = getUsualOrderFunction(2, 3);
+// YOUR CODE HERE ------------------------
 function getUsualOrderFunction(sandwiches, burgers) {
   return function() {
     console.log("We'll get " + sandwiches + " sandwiches and " + burgers + " burgers.");
@@ -94,11 +96,13 @@ theUsual(); // We'll get 2 sandwiches and 3 burgers.
 
 
 
-// Generate a function that requires arguments
+// Generate a function that requires arguments.
+// Notice that the examples at the end are also passing arguments!
+// How many parameters do the outer and inner functions each need?
 
 var recipient = "Devon";
 var sendNote = getSendNoteFunction(recipient);
-// FILL THIS IN --------------------------
+// YOUR CODE HERE ------------------------
 
 function getSendNoteFunction(recipient) {
   return function(message) {
@@ -122,10 +126,11 @@ sendNote("You are cordially invited...");
 
 
 
-// Generate a function that requires arguments
+// Generate another function that requires arguments.
+// This time you'll have to set up the flyTo variable yourself.
 
 var personToVisit = "best friend";
-// FILL THIS IN --------------------------
+// YOUR CODE HERE ------------------------
 var flyTo = getFlyToCityFunction(personToVisit);
 
 function getFlyToCityFunction(person) {
@@ -138,7 +143,7 @@ function getFlyToCityFunction(person) {
 
 flyTo("Shanghai");
 // Enjoy your visit to Shanghai to visit your best friend.
-personToVisit = "Shanghai";
+personToVisit = "Toronto"; // (has no effect on next method call)
 flyTo("Lagos");
 // Enjoy your visit to Lagos to visit your best friend.
 

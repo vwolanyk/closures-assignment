@@ -711,7 +711,7 @@ Next, take a look at `closureAttempt3.js`. This is the same solution! We have si
 
 ## Exercise 1
 
-The file `closure_exercises.js` provides a number of exercises. Your task is to fill in the missing code. In each example, you are trying to get the code to run successfully. Use the code at the top and bottom of the exercises to determine what you need to accomplish.
+The file `closure_exercises.js` provides a number of exercises (ignore `advanced.js` for now). Your task is to fill in the missing code. In each example, you are trying to get the code to run successfully. Use the code at the top and bottom of the exercises to determine what you need to accomplish.
 
 Note as well that each closure in the exercises simply generates output (ie. `console.log()`). In the real world, closures are made to solve problems, and so they are almost always more complex.
 
@@ -719,7 +719,7 @@ Note as well that each closure in the exercises simply generates output (ie. `co
 
 ## Exercise 2
 
-[[ CHECK OUT THE @ASSIGNMENT TAGS IN THE `game/` FOLDER ]]
+Fill in the event handlers found in `closure_exercises/advanced.js`. Each problem will have its own goal described in comments.
 
 
 

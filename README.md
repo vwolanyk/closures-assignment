@@ -1,12 +1,9 @@
 
-### Plan
-
-
 # Variable scope
 
 This assignment will cover variable scope in JavaScript. In doing so, we will explore one of the more complex scope-related concepts: closures. By the end, you should have an understanding of how to create local variables in JavaScript, how and why to avoid global variables, and how to work with and create closures.
 
-## Pre-requisites
+## Prerequisites
 
 * functions
 * variables
@@ -16,7 +13,7 @@ This assignment will cover variable scope in JavaScript. In doing so, we will ex
 
 You'll get the most out of this assignment by trying out for yourself all of the examples provided. Make an empty file, eg. `test.js`, and simply running `node test.js` whenever you want to try out some code. This allows you to tweak code and try it again! Add `console.log()` statements if you want to see output in your terminal.
 
-Record any exercise answers in a separate file called `scope_answers.md`. There will also be exercises related to closures at the end, but these will direct you accordingly.
+Unless directed otherwise, record any exercise answers in a file called `scope_answers.md`.
 
 
 ## Overview
@@ -24,7 +21,7 @@ Record any exercise answers in a separate file called `scope_answers.md`. There 
 *Scope* describes what is available at any given time and place in your program. For example, a variable is only *in scope* after it is declared. Here is a simple example:
 
 ```js
-number += 5;
+number = number + 5;
 ```
 
 The above example throws an error on the first line; `number is not defined`. This is because the variable `number` is not *in scope* - it's not declared anywhere. Let's add a line:
@@ -40,12 +37,12 @@ If all programs were this simple, programming would be easy! Let's explore some 
 
 
 >NOTE:
-Remember to always use `var` when declaring a new variable! Otherwise, the variable will become *global* (instead of *local*). We'll explore this later.
+Remember to always use `var` when declaring a new variable! Otherwise, the variable will become *global* (instead of *local*). We'll come back to this later.
 
 
 ## Scope is Functional
 
-Scope JavaScript is considered to be *functional*. That is, any variable you declare is available anywhere inside that function, and is NOT available outside of the function.
+Scope JavaScript is considered to be *functional*. That is, any variable you declare with the `var` keyword (ie. a *local* variable) is available anywhere inside that function, and is NOT available outside of the function.
 
 Look at the following function:
 
@@ -68,7 +65,7 @@ What if we try to simply print out the value of `target`?
 console.log('Target:', target); // ReferenceError: target is not defined
 ```
 
-Because the variable was declared inside the function, it is not available outside of the function. This hopefully is hopefully what we expect! Ruby works the same way.
+Because the variable was declared inside the function, it is not available outside of the function. This hopefully is hopefully what we expect! Ruby works the same way when declaring local variables inside methods.
 
 In the following example, we therefore shouldn't expect either attempt to print out `my_value` to work:
 
@@ -91,9 +88,11 @@ function run() {
   console.log('Target:', target);
 }
 run(); // Target: the store
+target = 10;
+run();
 ```
 
-The answer is yes! _Unlike Ruby_, a variable declared outside of a function is accessible inside of any functions on the same level.
+The answer is yes! _Unlike Ruby_, a local variable declared outside of a function is accessible inside the function.
 
 JavaScript uses functions all over the place. It is likely that you've been using them more than you realize! It is important to know, however, because scope depends entirely on it. Below is an example of an issue you might run into with functional scope. Note that this example will NOT run in node - it is written for the browser.
 
@@ -121,12 +120,12 @@ Why? Because you are actually defining a function inside of another function. Lo
 
 As it turns out, this happens all the time in JavaScript. As we'll see later, we sometimes declare functions within functions intentionally!
 
-You can think about JavaScript scope in terms of 'levels'. Anything defined on the top level is accessible anywhere in that file. Anything defined in a function is available anywhere inside that function - and NOT available outside of that function.
+You can think about JavaScript scope in terms of 'levels'. Anything defined on the top level (not in any function) is accessible anywhere (it is globally scoped). Any function or local variable defined in a function is available anywhere inside that function - including functions nested within that function - and is NOT available outside of that function.
 
 >Note: the below code is a contrived example for demonstration purposes - it actually results in an infinite loop if you call any of the functions!
 
 ```js
-// Top level; anything defined here is available anywhere in the file
+// Top level; anything defined here is available anywhere
 
 function doStuff() { // defined at top level, so available anywhere
   performActions();
@@ -161,14 +160,16 @@ We can see that any defined variable is available anywhere 'below' its current l
 
 
 ## Exercise 1
-
+@TODO READ
 What is the value output in the given `console.log()` statements? Read them and guess *before* running the code. For each answer, explain (keep it short) why the output came out that way.
 
 Some of these might be challenging. Talk with other students to try to understand the result.
 
+@TODO Add initial example!
+
 ```js
-var dalmations = 101;
-console.log(dalmations);
+var dalmatians = 101;
+console.log(dalmatians);
 ```
 
 ```js
@@ -183,6 +184,8 @@ var message = "Up here!";
 function shout() {
   console.log(message);
 }
+
+shout();
 ```
 
 ```js
@@ -232,6 +235,7 @@ function getMail() {
     var contents = 'Struck it rich!';
   }
 
+  changeContents();
   return contents;
 }
 
@@ -251,6 +255,7 @@ function secondIdea() {
   console.log(decision);
 }
 
+firstIdea();
 secondIdea();
 ```
 
@@ -258,7 +263,7 @@ secondIdea();
 
 ## Blocks
 
-We've said already that JavaScript has *functional* scope. How does scope work with blocks? For example, a `for` loop?
+We've said already that JavaScript has *functional* scope. How does scope work with blocks? For example, within a `for` loop:
 
 ```js
 for (var i = 0; i < 5; i++) {
@@ -278,7 +283,7 @@ var newStorePrices = storePrices.map(function(oldPrice) {
 console.log(newPrice); // ReferenceError: newPrice is not defined
 ```
 
-This may look surprising because `newPrice` is clearly defined above our `console.log(newPrice)` line. However, `newPrice` is defined inside of a function, and so it shouldn't be accessible anywhere other than inside of that function. The function just happens to be defined *inline*, meaning that we're not taking the time to separately define and name a function. Let's do it the other way too:
+This may look surprising because `newPrice` is clearly defined above our `console.log(newPrice)` line. However, `newPrice` is defined inside of a function, and so it shouldn't be accessible anywhere other than inside of that function. The function just happens to be *anonymous* and defined *inline*, meaning that a) it has no name and b) we're not taking the time to separately define a function. Let's do it the other way too:
 
 ```js
 var storePrices = [1, 4, 5, 9];
@@ -294,12 +299,13 @@ console.log(newPrice); // ReferenceError: newPrice is not defined
 
 Now it's much clearer that `newPrice` is defined somewhere inaccessible - 'below' our current level in the code. It is therefore only accessible inside of that function.
 
-To recap - blocks in JavaScript are NOT special (unlike blocks in Ruby). They do not get their own scope. Scope is based on functions.
+To recap - blocks in JavaScript are NOT special (unlike blocks in Ruby). They do not get their own scope. Scope is based only on functions.
 
 
 ## Exercise 2
 
 Try to figure out what will happen with each `console.log()` statement before running it. Give a short answer about why it works (or does not work!) the way it does.
+@TODO Add possible lead-in for each problem
 
 ```js
 function buildHouse(address) {
@@ -313,10 +319,12 @@ console.log(address);
 ```js
 var determined = false;
 if (determined) {
-  var smoothie = 'strawberry banana'; // this is BAD - why?
+  var smoothie = 'strawberry banana';
 }
 console.log(smoothie);
 ```
+
+@TODO Add follow-up rewrite questions, eg. "rewrite so that `smoothie` exists regardless of value of `determined`"
 
 ```js
 for (var i = 0; i < 5; i++) {
@@ -339,32 +347,30 @@ console.log(lastItem);
 
 ## Local vs Global Variables
 
-All of the examples so far have used local variables. This is because you should always avoid global variables. Although they can be very confusing, they are attractive to beginners because they seem easier at first.
+All of the examples so far have used local variables. This is because you should avoid global variables. Global variables are attractive to beginners because they seem easier to work with at first.
 
-Global variables are accessible in ANY file, anywhere in your application. That means that the following code works:
+Global variables are accessible in ANY file, anywhere in your application. This makes it very hard to 'trust' your variables because they can be changed anywhere! Tracking down bugs under those conditions becomes nearly impossible.
 
-```js
-function setAvailable() {
-  available = true;
-}
-setAvailable();
-console.log(available); // true
-```
-
-Note that this is exactly opposite to what we just learned about scope. To make this even more confusing, the following (nearly identical) code throws an error:
+Let's say we have the following code:
 
 ```js
-function setAvailable() {
-  available = true;
-}
+leaveWork();
 console.log(available); // ReferenceError: available is not defined
 ```
 
-The only difference here is that we didn't call the `setAvailable()` function. In other words, sometimes `console.log(available)` works, and sometimes it errors. Now imagine you have many files, thousands of lines of code, and you are expecting `available` to be set. Instead, you get an error. Debugging problems like these are very difficult because the problem can be anywhere.
+This works as expected so far. Now imagine that the `leaveWork()` function *is in a different file* and looks as follows:
+
+```js
+function leaveWork() {
+  available = true; // not using 'var'
+}
+```
+
+Our original code will no longer error! The function `leaveWork()` is setting a global variable - note the lack of `var` when the variable is declared - and is interfering with our code elsewhere. For this reason, we always want to limit the scope of our variables as much as possible.
 
 > ##### Summary
 * Rethink your solution if you are tempted to use global variables.
-* Always use `var` to set new variables.
+* Always use `var` to set new variables (or `let` and `const` if you're using ES6 -- read more about them here: https://hacks.mozilla.org/2015/07/es6-in-depth-let-and-const/)
 
 
 
@@ -382,8 +388,7 @@ This part of the assignment will provide an explanation of closures and a walkth
 
 Some important notes:
 
-* Closures are a very difficult concept. If you finish this assignment without being able to explain what a closure is, don't feel too bad about it. You should hopefully have some idea about them.
-* You *will* use closures, however, whether you understand them or not. This is basically unavoidable in modern JavaScript wed applications.
+* You *will* use closures whether you understand them or not. This is basically unavoidable in modern JavaScript wed applications.
 * You may have used closures already without realizing it!
 * The only way to understand closures is to use them. A lot.
 
@@ -401,7 +406,7 @@ This isn't a closure; it's just a function. It's not remembering any data. We've
 
 ```js
 function sayHello(name) {
-  console.log("Hello, " name + "!");
+  console.log("Hello, " + name + "!");
 }
 ```
 
@@ -706,5 +711,7 @@ Note as well that each closure in the exercises simply generates output (ie. `co
 # Additional Resources
 
 https://medium.freecodecamp.com/javascript-closures-explained-by-mailing-a-package-4f23e9885039
+
 http://stackoverflow.com/a/7464475/659816
+
 http://stackoverflow.com/questions/111102/how-do-javascript-closures-work

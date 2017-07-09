@@ -3,8 +3,13 @@
 // This time you'll have to set up the flyTo variable yourself.
 
 var personToVisit = "best friend";
+var flyTo = getflyToOutput(personToVisit);
 // YOUR CODE HERE ------------------------
-
+function getflyToOutput(string){
+  return function(location){
+    console.log("Enjoy your visit to " + location + "to visit " + string);
+  }
+}
 
 
 // ---------------------------------------

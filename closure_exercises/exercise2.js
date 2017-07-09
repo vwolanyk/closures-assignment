@@ -3,9 +3,13 @@
 // You'll have to set up a variable called tellFavouriteMovie to be a function that remembers the value "The Matrix".
 // If you're stuck, check the previous exercise!
 var movie = "The Matrix";
-
+var tellFavouriteMovie = favouriteMovie(movie)
 // YOUR CODE HERE ------------------------
-
+function favouriteMovie(movieName){
+  return function (){
+    console.log(movieName);
+  }
+}
 
 
 // ---------------------------------------

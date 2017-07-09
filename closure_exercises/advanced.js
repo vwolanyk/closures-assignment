@@ -9,12 +9,16 @@ clickCounter.addEventListener('click', getClickCountHandler());
 
 // Problem 1: fill in this function
 function getClickCountHandler() {
+  var count = 0
+    return function(){
+      return console.log(++count);
+    }
 
 }
 
 
 
-document.addEventListener('keydown', getSecretKeyCodeEventHandler());
+document.addEventListener('keydown', getSecretKeyCodeEventHandler(event));
 
 // Goal: we want to generate a secret code by pressing buttons. When we are ready, we press Enter to see the code on the screen.
 
@@ -26,7 +30,16 @@ document.addEventListener('keydown', getSecretKeyCodeEventHandler());
 // ie. if the parameter is called event, then write: event.keyCode
 // Also note that the keycode for Enter is 13
 
-function getSecretKeyCodeEventHandler() {
-  // FILL THIS IN
+function getSecretKeyCodeEventHandler(event) {
+var keysArray = [];
+
+return function(event){
+var key = event.keyCode;
+keysArray.push(key);
+if (key === 13){
+alert(keysArray);
+}
+
+}
 
 }
